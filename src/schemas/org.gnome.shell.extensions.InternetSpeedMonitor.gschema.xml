@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+
+  <enum id="org.gnome.shell.extensions.WallpaperSwitcher.mode">
+    <value value="0" nick="Sequential"/>
+    <value value="1" nick="Random"/>
+  </enum>
+
+
+  <schema id="org.gnome.shell.extensions.WallpaperSwitcher"
+    path="/org/gnome/shell/extensions/WallpaperSwitcher/">
+    
+    <key name="frequency" type="d">
+      <default>60</default>
+      <summary>Swapping time (in seconds) </summary>
+      <description>This value shows after how much time the wallpaper will change.</description>
+    </key>
+    
+    <key name="wallpaper-path" type = "s">
+      <default>"/usr/share/backgrounds"</default>
+      <summary>Path to your wallpaper folder</summary>
+      <description>Specify the folder in which your wallpapers are stored</description>
+    </key>
+
+    <key name="change-lock-screen" type = "b">
+      <default>false</default>
+      <summary>Change lock screen wallpaper</summary>
+      <description>Choose whether to change lock screen wallpaper</description>
+    </key>
+
+    <key name="mode" enum = "org.gnome.shell.extensions.WallpaperSwitcher.mode">
+      <default>"Sequential"</default>
+      <summary>Change wallpaper Changing mode</summary>
+      <description>Choose whether to change wallpaper sequentially or randomly</description>
+    </key>
+
+  </schema>
+</schemalist>
