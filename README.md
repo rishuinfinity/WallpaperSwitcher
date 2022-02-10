@@ -27,6 +27,7 @@ A Gnome extension to change wallpapers after given interval of time.
 ## Screenshots
 
 ![Screenshot](screenshots/1.png)
+![Screenshot](screenshots/2.gif)
 <!-- ![Screenshot](screenshots/4.png)
 ![Screenshot](screenshots/3.png)
 ![Screenshot](screenshots/2.png)
