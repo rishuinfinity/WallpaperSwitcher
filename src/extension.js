@@ -55,15 +55,15 @@ function setPictureUriOfSettingsObject(bsettings, path) {
 function getImagePaths(){
   try{
     let iNames = [];
-    wfolder = Gio.file_new_for_path(wallpaperPath);
-    enumerator = wfolder.enumerate_children("standard::name, standard::type",Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+    let wfolder = Gio.file_new_for_path(wallpaperPath);
+    let enumerator = wfolder.enumerate_children("standard::name, standard::type",Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
     let child;
     while ((child = enumerator.next_file(null))){
       // check if it is a file
       if( child.get_file_type() == Gio.FileType.REGULAR)
       {
         // check extension
-        ext = child.get_name().split(".").pop();
+        let ext = child.get_name().split(".").pop();
         if(allowedExtensions.indexOf(ext) != -1)
         {
           iNames.push(child.get_name());
