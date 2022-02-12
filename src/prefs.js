@@ -32,7 +32,7 @@ function buildPrefsWidget() {
 ///////////////////////////  Reload Notice
 
     let reloadLabel = new Gtk.Label({
-        label: "<b>Reload the extension to apply changes</b>",
+        label: "If changes dont apply, reload the extension.",
         halign: Gtk.Align.CENTER,
         use_markup: true,
         visible: true

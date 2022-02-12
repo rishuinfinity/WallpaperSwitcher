@@ -13,6 +13,7 @@ let settings;
 let imageNames;
 let imgidx = -1;
 let refreshTime = 10;
+let oldrefreshTime = 10;
 let wallpaperPath = "";
 let logSize = 8000; // about 8k
 let home_dir = GLib.get_home_dir();
@@ -52,10 +53,11 @@ function setPictureUriOfSettingsObject(bsettings, path) {
   }
 }
 
-function getImagePaths(){
+function updateWallpaperPaths(){
   try{
+    let tempwallpaperPath = settings.get_string('wallpaper-path');
     let iNames = [];
-    let wfolder = Gio.file_new_for_path(wallpaperPath);
+    let wfolder = Gio.file_new_for_path(tempwallpaperPath);
     let enumerator = wfolder.enumerate_children("standard::name, standard::type",Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
     let child;
     while ((child = enumerator.next_file(null))){
@@ -70,10 +72,22 @@ function getImagePaths(){
         }
       }
     }
-    imageNames = iNames;
+    if(iNames.length != 0){
+      imageNames = iNames;
+      wallpaperPath = tempwallpaperPath;
+    }
   }
   catch(e){
     saveExceptionLog(e);
+  }
+}
+
+function updateRefreshTime(){
+  refreshTime = settings.get_double('frequency');
+  if(oldrefreshTime != refreshTime){
+    Mainloop.source_remove(timeout);
+    timeout = Mainloop.timeout_add_seconds(refreshTime, changeWallpaper);
+    oldrefreshTime = refreshTime;
   }
 }
 
@@ -81,7 +95,8 @@ function changeWallpaper(){
   // read all files in the folder
   // set wallpaper
   try{
-    getImagePaths();
+    updateWallpaperPaths();
+    updateRefreshTime();
     if(imageNames.length == 0){
       saveExceptionLog("No images found in the folder "+ wallpaperPath);
       return true;
@@ -130,6 +145,7 @@ function init() {
 function enable() {
   settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher');
   refreshTime = settings.get_double('frequency');
+  oldrefreshTime = refreshTime;
   wallpaperPath = settings.get_string('wallpaper-path');
   timeout = Mainloop.timeout_add_seconds(refreshTime, changeWallpaper);
 }
