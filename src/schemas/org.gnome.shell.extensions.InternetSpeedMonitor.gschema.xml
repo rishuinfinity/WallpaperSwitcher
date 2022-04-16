@@ -29,7 +29,7 @@
     </key>
 
     <key name="mode" enum = "org.gnome.shell.extensions.WallpaperSwitcher.mode">
-      <default>"Sequential"</default>
+      <default>"Random"</default>
       <summary>Change wallpaper Changing mode</summary>
       <description>Choose whether to change wallpaper sequentially or randomly</description>
     </key>

@@ -8,6 +8,9 @@ const Gio = imports.gi.Gio;
 const GLib  = imports.gi.GLib;
 const Mainloop = imports.mainloop;
 const ExtensionUtils = imports.misc.extensionUtils;
+const Config = imports.misc.config;
+const [major] = Config.PACKAGE_VERSION.split('.');
+const shellVersion = Number.parseInt(major);
 
 let settings;
 let imageNames;
@@ -50,6 +53,19 @@ function setPictureUriOfSettingsObject(bsettings, path) {
     }
   } else {
     saveExceptionLog("Could not set wallpaper.");
+  }
+  if (shellVersion >= 42){
+  if (bsettings.is_writable("picture-uri-dark")) {
+    // Set a new Background-Image (should show up immediately):
+    let rc = bsettings.set_string("picture-uri-dark", path);
+    if (rc) {
+      Gio.Settings.sync(); // Necessary: http://stackoverflow.com/questions/9985140
+    } else {
+      saveExceptionLog("Could not set lock screen wallpaper.");
+    }
+  } else {
+    saveExceptionLog("Could not set dark wallpaper.");
+  }
   }
 }
 
