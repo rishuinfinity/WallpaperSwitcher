@@ -10,28 +10,35 @@
   <schema id="org.gnome.shell.extensions.WallpaperSwitcher"
     path="/org/gnome/shell/extensions/WallpaperSwitcher/">
     
-    <key name="frequency" type="d">
-      <default>60</default>
+    <key name="frequency" type="i">
+      <default>300</default>
       <summary>Swapping time (in seconds) </summary>
       <description>This value shows after how much time the wallpaper will change.</description>
     </key>
     
+    <key name="switching-mode" type="i">
+    <!-- 0 means Sequential and 1 means Random -->
+      <default>1</default>
+      <summary>Change wallpaper Changing mode</summary>
+      <description>Choose whether to change wallpaper sequentially or randomly</description>
+    </key>
+
     <key name="wallpaper-path" type = "s">
       <default>"/usr/share/backgrounds"</default>
       <summary>Path to your wallpaper folder</summary>
       <description>Specify the folder in which your wallpapers are stored</description>
     </key>
 
-    <key name="change-lock-screen" type = "b">
+
+    <key name="wallpaper-overlay-support" type="b">
       <default>false</default>
-      <summary>Change lock screen wallpaper</summary>
-      <description>Choose whether to change lock screen wallpaper</description>
+      <summary>Directly Integrate with Wallpaper Overlay</summary>
+      <description>Choose whether to apply wallpaper change direclty through wallpaper overlay</description>
     </key>
 
-    <key name="mode" enum = "org.gnome.shell.extensions.WallpaperSwitcher.mode">
-      <default>"Random"</default>
-      <summary>Change wallpaper Changing mode</summary>
-      <description>Choose whether to change wallpaper sequentially or randomly</description>
+    <key name="error-msg" type="s">
+      <default>""</default>
+      <summary>Error message to be shown in prefs tab</summary>
     </key>
 
   </schema>

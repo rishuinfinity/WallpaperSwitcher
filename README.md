@@ -48,7 +48,7 @@ The new release packs the following new features.
 This extension has following features:
 
 * Easily set a folder containing wallpapers to apply
-* To available modes
+* Two available modes
   * Sequential : Wallpaper changes in a cyclic order
   * Random : Wallpaper changes in a random order
 * Option to set time-delay in seconds
@@ -57,7 +57,7 @@ This extension has following features:
 
 To use this extension, you will need
 
-- Gnome Shell 3.20 or later
+- Gnome Shell 3.34 or later
 
 ### Prerequisite: Install Gnome Tweaks
 

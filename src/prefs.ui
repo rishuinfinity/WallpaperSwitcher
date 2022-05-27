@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesPage" id="prefs-page">
+    <property name="name">prefs-page</property>
+    <property name="title" translatable="no">Wallpaper OSwitcher</property>
+    <property name="icon-name">folder-symbolic</property>
+    <child>
+      <object class="AdwPreferencesGroup" id="prefs-group">
+        <property name="width-request">500px</property>
+        <child>
+          <object class="AdwActionRow" id="frequency-row">
+            <property name="title" translatable="no">Refresh Time</property>
+            <child>
+              <object class="GtkSpinButton" id="frequency-changer">
+                <property name="valign">center</property>
+                <property name="digits">0</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment">
+                  <property name="lower">1</property>
+                  <property name="upper">100000</property>
+                  <property name="step-increment">1</property>
+                  <property name="page-increment">10</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="switching-mode-comborow">
+            <property name="title" translatable="no">Switching Mode</property>
+            <property name="valign">center</property>
+            <property name="model">switching-mode-model</property>
+          </object>
+          
+        </child>
+        
+        <child>
+          <object class="AdwExpanderRow" id="wallpaper-path-row">
+            <property name="title" translatable="no">Wallpaper Folder</property>
+            <property name="subtitle" translatable="no">Integrate with Wallpaper Overlay</property>
+            <child>
+              <object class="GtkEntry" id="wallpaper-path-entry">
+              <property name="primary-icon-activatable">False</property>
+              <property name="secondary-icon-activatable">True</property>
+              <property name="secondary-icon-name">emblem-default-symbolic</property>
+              </object>
+            </child>
+            <!-- <property name="activatable-widget">activities_button_icon_monochrome_switch</property> -->
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow" id="wallpaper-overlay-support-row">
+            <property name="title" translatable="no">Integrate with Wallpaper Overlay</property>
+            <property name="activatable-widget">wallpaper-overlay-support-switch</property>
+            <child>
+              <object class="GtkSwitch" id="wallpaper-overlay-support-switch">
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup" id="reset-group">
+        <child>
+          <object class="AdwActionRow" id="reset-row">
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="activatable-widget">reset-button</property>
+            <child type="prefix">
+              <object class="GtkButton" id="reset-button">
+                <property name="label">Reset Settings</property>
+                <property name="halign">end</property>
+                <property name="hexpand">True</property>
+                <style>
+                  <class name="apply-button"/>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup" id="error-group">
+        <property name="visible">False</property>
+        <child>
+          <object class="AdwExpanderRow" id="error-row">
+            <property name="halign">fill</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="title">Error Title</property>
+            <style>
+              <class name="card"/>
+              <class name="background"/>
+            </style>
+            <child>
+              <object class="GtkLabel" id="error-view">
+                <property name="selectable">True</property>
+                <property name="margin-bottom">20px</property>
+                <property name="margin-end">20px</property>
+                <property name="margin-start">20px</property>
+                <property name="margin-top">20px</property>
+                <property name="wrap">True</property>
+                <style>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkStringList" id="switching-mode-model">
+    <items>
+      <item translatable="yes">Sequential</item>
+      <item translatable="yes">Random</item>
+    </items>
+  </object>
+</interface>
