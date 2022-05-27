@@ -16,8 +16,8 @@ const lib            = Me.imports.lib;
 ////////////////////////////////////////////////////////////
 // Global Variables
 let mySetting;
+let handlerMode;
 let handlerFrequency;
-let handlerWallpaperOverlaySupport;
 let timeout;
 let imageIndex = -1;
 // let wallpaperList = [];
@@ -61,8 +61,7 @@ function changeWallpaperRandomly(wallpaperSetter){
 
 function updateMainloop(){
   Mainloop.source_remove(timeout);
-  let wallpaperSetter = lib.getWallpaperOverlaySupport()?lib._setWallpaperWithOverlay:lib._setWallpaper;
-  // let wallpaperSetter = lib._setWallpaper;
+  let wallpaperSetter = lib._setWallpaper;
   timeout = Mainloop.timeout_add_seconds(lib.getFrequency(),
   lib.getSwitchingMode()? changeWallpaperRandomly(wallpaperSetter):
   changeWallpaperSequentially(wallpaperSetter)
@@ -83,10 +82,10 @@ function enable() {
     mySetting = ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher');
     updateMainloop();
     wallpaperList = lib.getWallpaperList();
-    handlerFrequency = mySetting.connect("changed::frequency",()=>{
+    handlerMode = mySetting.connect("changed::switching-mode",()=>{
       updateMainloop();
     });
-    handlerWallpaperOverlaySupport = mySetting.connect("changed::wallpaper-overlay-support",()=>{
+    handlerFrequency = mySetting.connect("changed::frequency",()=>{
       updateMainloop();
     });
   }
@@ -95,8 +94,10 @@ function enable() {
 
 function disable() {
   mySetting.disconnect(handlerFrequency);
-  mySetting.disconnect(handlerWallpaperOverlaySupport);
+  mySetting.disconnect(handlerMode);
   Mainloop.source_remove(timeout);
+  handlerFrequency = null;
+  handlerMode = null;
   timeout = null;
   mySetting = null;
 }

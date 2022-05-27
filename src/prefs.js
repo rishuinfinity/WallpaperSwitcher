@@ -12,9 +12,6 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me             = ExtensionUtils.getCurrentExtension();
 const lib            = Me.imports.lib;
 
-////////////////////////////////////////////////////////////
-// Function Declaraions
-
 
 ////////////////////////////////////////////////////////////
 // Prefs.js default functions
@@ -25,7 +22,7 @@ function init(){
 }
 
 function fillPreferencesWindow(window) {
-    window.set_default_size(530, 700);
+    window.set_default_size(530, 400);
     let builder = Gtk.Builder.new();
     try{
         // Global Variable for prefs window
@@ -36,16 +33,16 @@ function fillPreferencesWindow(window) {
         let switchingModeComboRow = builder.get_object("switching-mode-comborow");
         let wallpaperPathRow = builder.get_object("wallpaper-path-row");
         let wallpaperPathEntry = builder.get_object("wallpaper-path-entry");
-        let wallpaperOverlaySupportSwitch = builder.get_object("wallpaper-overlay-support-switch");
         let resetButton = builder.get_object("reset-button");
         let errorGroup=builder.get_object("error-group");
         let errorRow = builder.get_object("error-row");
         let errorView= builder.get_object("error-view");
 
         //
-        let dropErr = ["WC:--","NIF:--","PNE:--","NAAWO:--","Reset"];
+        let dropErr = ["WC:--","NIF:--","PNE:--","Reset"];
         if(dropErr.includes(lib.getErrorMsg())) lib.setErrorMsg("");
         //
+
         //Adding bindings and connecting
         // Frequency Changer
         mySetting.bind(
@@ -55,10 +52,6 @@ function fillPreferencesWindow(window) {
             Gio.SettingsBindFlags.DEFAULT
         );
         // Switching Mode ComboRow
-        // let SwitchingOptions = new Gtk.StringList({});
-        // SwitchingOptions.append("Sequential");
-        // SwitchingOptions.append("Random");
-        // switchingModeComboRow.model = SwitchingOptions;
         switchingModeComboRow.connect("notify::selected-item", ()=>{
             lib.setSwitchingMode(switchingModeComboRow.selected);
         });
@@ -90,14 +83,6 @@ function fillPreferencesWindow(window) {
             lib.saveExceptionLog("upd");
             updatePathEntry();
         });
-
-        // Wallpaper Overlay Support Switch
-        mySetting.bind(
-            'wallpaper-overlay-support',
-            wallpaperOverlaySupportSwitch,
-            'active',
-            Gio.SettingsBindFlags.DEFAULT
-        );
 
         // Reset Button
         resetButton.connect('clicked',()=>{
@@ -171,14 +156,6 @@ function fillPreferencesWindow(window) {
                         "emblem-default-symbolic",
                         "Settings have been reset"
                         );
-                    break;
-                case "NAAWO":
-                    showComplexError(
-                        "dialog-warning-symbolic",
-                        "Please configure Wallpaper Overlay",
-                        "Seems Auto-Apply is not apply in the extension Wallpaper Overlay"+
-                        "\nTurn it on to have Wallpaper Switcher with Overlay set \n"
-                    );
                     break;
                 default:
                     showComplexError("dialog-error-symbolic","Some Error Occured",String(errMsgs));

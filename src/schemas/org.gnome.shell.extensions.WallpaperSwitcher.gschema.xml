@@ -29,13 +29,6 @@
       <description>Specify the folder in which your wallpapers are stored</description>
     </key>
 
-
-    <key name="wallpaper-overlay-support" type="b">
-      <default>false</default>
-      <summary>Directly Integrate with Wallpaper Overlay</summary>
-      <description>Choose whether to apply wallpaper change direclty through wallpaper overlay</description>
-    </key>
-
     <key name="error-msg" type="s">
       <default>""</default>
       <summary>Error message to be shown in prefs tab</summary>

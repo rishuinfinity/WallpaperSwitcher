@@ -11,15 +11,6 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me             = ExtensionUtils.getCurrentExtension();
 const homeDir       = GLib.get_home_dir();
 
-
-////////////////////////////////////////////////////////////
-// Function Declaraions
-// function _modifyExternalSetting(schemaPath, settingId, settingValue);
-// function getCurrentColorScheme()
-// function _setWallpaper(path);
-// function saveExceptionLog(e);
-
-
 ////////////////////////////////////////////////////////////
 // Function Implementations
 function _modifyExternalSetting(schemaPath, settingId, settingValue){
@@ -66,25 +57,6 @@ function _setWallpaper(path){
   }
 }
 
-function _setWallpaperWithOverlay(path){
-  try{
-    let wallpaperOverlaySetting = new Gio.Settings({schema: 'org.gnome.shell.extensions.WallpaperOverlay'});
-    if(wallpaperOverlaySetting.get_boolean("is-auto-apply")){
-      _modifyExternalSetting('org.gnome.shell.extensions.WallpaperOverlay',"picture-uri",path);
-      // wallpaperOverlaySetting.set_string("picture-uri",path);
-      _modifyExternalSetting('org.gnome.shell.extensions.WallpaperOverlay',"apply-signal",!wallpaperOverlaySetting.get_boolean("apply-signal"));
-      // wallpaperOverlaySetting.set_boolean("apply-signal",wallpaperOverlaySetting.get_boolean("apply-signal"));
-    }
-    else{
-      setErrorMsg("NAAWO:--"); // No Auto Apply Wallpaper Overlay
-      _setWallpaper(path);
-    }
-    return ["Wallpaper Set",1];
-  }
-  catch(e){
-    saveExceptionLog(e);
-  }
-}
 
 function saveExceptionLog(e){
   try{
@@ -180,8 +152,8 @@ function getErrorMsg(){
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').get_string('error-msg');
 }
 function setErrorMsg(val){
-  let dropErr = [""]
-  if(!dropErr.includes(val)) saveExceptionLog("DisplayLog: "+String(val));
+  let dropErr = ["WC",""]
+  if(!dropErr.includes(val.split(":--")[0])) saveExceptionLog("DisplayLog: "+String(val));
   saveExceptionLog("DisplayLog: "+String(val));
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').set_string('error-msg',String(val));
 }
