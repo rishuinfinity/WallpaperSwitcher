@@ -39,8 +39,8 @@ function fillPreferencesWindow(window) {
         let errorView= builder.get_object("error-view");
 
         //
-        let dropErr = ["WC:--","NIF:--","PNE:--","Reset"];
-        if(dropErr.includes(lib.getErrorMsg())) lib.setErrorMsg("");
+        let dropErr = ["WC","NIF","PNE","Reset"];
+        if(dropErr.includes(lib.getErrorMsg().split(":--")[0])) lib.setErrorMsg("");
         //
 
         //Adding bindings and connecting
