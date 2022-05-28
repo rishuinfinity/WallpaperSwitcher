@@ -57,7 +57,6 @@ function _setWallpaper(path){
   }
 }
 
-
 function saveExceptionLog(e){
   try{
     let logSize = 8000; // about 8k
@@ -121,7 +120,6 @@ function getWallpaperList(wallpaperFolderPath = getWallpaperPath()){
 }
 
 function getFrequency(){
-  saveExceptionLog(ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').get_int('frequency'));
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').get_int('frequency');
 }
 function getWallpaperPath(){
