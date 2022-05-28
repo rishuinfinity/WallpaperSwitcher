@@ -35,6 +35,33 @@ function getCurrentColorScheme(){
   return (colorScheme == 1)?1:0; //1 means dark
 }
 
+function checkWallpaperOverlayState(){
+  try{
+    let otherExtension = imports.ui.main.extensionManager.lookup("WallpaperOverlay@Rishu");
+    //Enabled is 1 Ref:  https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/js/misc/extensionUtils.js#L21-32
+    if(otherExtension.state != 1){
+      setErrorMsg("WONIE:--"); // Wallpaper Overlay Not Installed or Enabled
+        return null;
+    }
+    else{
+      let wallpaperOverlaySetting = getOtherExtensionSettings(
+        'org.gnome.shell.extensions.WallpaperOverlay',
+        otherExtension);
+      if(wallpaperOverlaySetting.get_boolean("is-auto-apply")){
+        return wallpaperOverlaySetting;
+      }
+      else{
+        setErrorMsg("WONAA:--"); // Wallpaper Overlay No Auto Apply
+        return null;
+      }
+    }
+  }
+  catch(e){
+    saveExceptionLog(e);
+    return null;
+  }
+}
+
 function _setWallpaper(path){
   try{
     if( Gio.file_new_for_path(path).query_exists(null)){
