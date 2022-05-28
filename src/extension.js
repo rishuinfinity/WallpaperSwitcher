@@ -16,6 +16,7 @@ const lib            = Me.imports.lib;
 ////////////////////////////////////////////////////////////
 // Global Variables
 let mySetting;
+let wallpaperOverlaySetting;
 let handlerMode;
 let handlerFrequency;
 let timeout;
