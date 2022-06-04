@@ -13,7 +13,6 @@
             <property name="valign">center</property>
             <property name="model">switching-mode-model</property>
           </object>
-          
         </child>
         
         <child>
@@ -30,6 +29,7 @@
             <!-- <property name="activatable-widget">activities_button_icon_monochrome_switch</property> -->
           </object>
         </child>
+
         <child>
           <object class="AdwActionRow" id="frequency-row">
             <property name="title" translatable="no">Refresh Time</property>
@@ -39,7 +39,7 @@
                 <property name="digits">0</property>
                 <property name="adjustment">
                   <object class="GtkAdjustment">
-                  <property name="lower">1</property>
+                  <property name="lower">3</property>
                   <property name="upper">100000</property>
                   <property name="step-increment">1</property>
                   <property name="page-increment">10</property>
@@ -52,20 +52,34 @@
       </object>
     </child>
     <child>
-      <object class="AdwPreferencesGroup" id="reset-group">
+      <object class="AdwPreferencesGroup" id="extra-pre-group">
+        <child>
+          <object class="AdwActionRow" id="show-current-row">
+            <property name="activatable-widget">show-current</property>
+            <property name="title" translatable="no">Show Current Wallpaper in Nautilus</property>
+            <child>
+              <object class="GtkButton" id="show-current">
+                <property name="valign">center</property>
+                <property name="icon-name">folder-visiting-symbolic</property>
+                <style>
+                  <class name="flat"/>
+                  <class name="circular"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
         <child>
           <object class="AdwActionRow" id="reset-row">
-            <property name="hexpand">True</property>
-            <property name="vexpand">False</property>
+            <property name="title">Reset Settings</property>
             <property name="activatable-widget">reset-button</property>
-            <child type="prefix">
+            <child>
               <object class="GtkButton" id="reset-button">
-                <property name="label">Reset Settings</property>
-                <property name="halign">end</property>
-                <property name="hexpand">True</property>
+                <property name="valign">center</property>
+                <property name="icon-name">mail-replied-symbolic</property>
                 <style>
-                  <class name="apply-button"/>
                   <class name="flat"/>
+                  <class name="circular"/>
                 </style>
               </object>
             </child>

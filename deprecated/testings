@@ -1,0 +1,11 @@
+WORKS: WS turned on WO turned on with auto on
+WORKS: WS turned on WO turned on with auto off WO auto on
+WORKS: WO turned on with auto on WS turned on
+WORKS: WO turned on with auto off WS turned on WO auto on
+WORKS: WS turned on WO turned on with auto on WO auto off
+WORKS: check if managing other extensions is fine
+WORKS: check if switching WO and WS quickly breaks anything
+WORKS: check if switching wallpaper overlay options breaks anything
+
+
+
