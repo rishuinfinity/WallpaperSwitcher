@@ -1,5 +1,10 @@
 # Wallpaper Switcher
 
+<p align="center">
+  <img src="screenshots/WallpaperSwitcher.png" />
+  <br/>
+</p>
+
 A Gnome extension to change wallpapers after given interval of time.
 
 ## Table of Contents

@@ -35,28 +35,83 @@ function getCurrentColorScheme(){
   return (colorScheme == 1)?1:0; //1 means dark
 }
 
-function _setWallpaper(path){
+function getCurrentWallpaperUri(){
+  let backgroundSetting = new Gio.Settings({schema: "org.gnome.desktop.background"});
+  if(getCurrentColorScheme() == 1){
+    return decodeURI(backgroundSetting.get_string("picture-uri-dark").substr(7,));
+  }
+  else{
+    return decodeURI(backgroundSetting.get_string("picture-uri").substr(7,));
+  }
+  
+}
+
+function getOtherExtensionSettings(schema,otherExtension){
+    if (!otherExtension)
+        throw new Error('getSettings() can only be called from extensions');
+
+    schema ||= otherExtension.metadata['settings-schema'];
+
+    const GioSSS = Gio.SettingsSchemaSource;
+
+    // Expect USER extensions to have a schemas/ subfolder, otherwise assume a
+    // SYSTEM extension that has been installed in the same prefix as the shell
+    let schemaDir = otherExtension.dir.get_child('schemas');
+    let schemaSource;
+    if (schemaDir.query_exists(null)) {
+        schemaSource = GioSSS.new_from_directory(schemaDir.get_path(),
+                                                 GioSSS.get_default(),
+                                                 false);
+    } else {
+        schemaSource = GioSSS.get_default();
+    }
+
+    let schemaObj = schemaSource.lookup(schema, true);
+    if (!schemaObj)
+        throw new Error(`Schema ${schema} could not be found for extension ${extension.metadata.uuid}. Please check your installation`);
+
+    return new Gio.Settings({ settings_schema: schemaObj });
+}
+
+function getWallpaperOverlaySetting(){
   try{
+    let otherExtension = imports.ui.main.extensionManager.lookup("WallpaperOverlay@Rishu");
+    //Enabled is 1 Ref:  https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/js/misc/extensionUtils.js#L21-32
+    if(otherExtension.state != 1){
+        return null;
+    }
+    else{
+      let wallpaperOverlaySetting = getOtherExtensionSettings(
+        'org.gnome.shell.extensions.WallpaperOverlay',
+        otherExtension);
+      return wallpaperOverlaySetting;
+    }
+  }
+  catch{}
+  return null;
+}
+
+function getWallpaperWithOverlaySetterFunction(wallpaperOverlaySetting){
+  return (path) => {
+    wallpaperOverlaySetting.set_string("picture-uri",path);
+  }
+}
+
+function getWallpaperSetterFunction(){
+  return (path) =>{
     if( Gio.file_new_for_path(path).query_exists(null)){
       path = "file://" + path;
       let colorScheme = getCurrentColorScheme();
       var msg,response;
       if(colorScheme == 0){
-        [msg,response] = _modifyExternalSetting("org.gnome.desktop.background", "picture-uri", path);
-        if (response == 0) return [msg,0];
+        _modifyExternalSetting("org.gnome.desktop.background", "picture-uri", path);
       }
       else{
-        [msg,response] = _modifyExternalSetting("org.gnome.desktop.background", "picture-uri-dark", path);
-        if (response == 0) return [msg,0];
+        _modifyExternalSetting("org.gnome.desktop.background", "picture-uri-dark", path);
       }
-      return ["Wallpaper Set",1];
     }
-  }
-  catch(e){
-    saveExceptionLog(e);
-  }
+  } 
 }
-
 
 function saveExceptionLog(e){
   try{
@@ -110,18 +165,17 @@ function getWallpaperList(wallpaperFolderPath = getWallpaperPath()){
       }
     }
     if(wallpaperPaths.length == 0){
-      setErrorMsg("NIF:--\n"+wallpaperFolderPath);
+      setErrorMsg("NIF:--\n"+wallpaperFolderPath); // No Images Found
     }
     return wallpaperPaths;
   }
   catch(e){
-    setErrorMsg("PNE:--\n"+wallpaperFolderPath);
+    setErrorMsg("PNE:--\n"+wallpaperFolderPath); // Path Not Exists
     return [];
   }
 }
 
 function getFrequency(){
-  saveExceptionLog(ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').get_int('frequency'));
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').get_int('frequency');
 }
 function getWallpaperPath(){
@@ -129,9 +183,6 @@ function getWallpaperPath(){
 }
 function getSwitchingMode(){
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').get_int('switching-mode');
-}
-function getWallpaperOverlaySupport(){
-  return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').get_boolean('wallpaper-overlay-support');
 }
 function setFrequency(val){
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').set_int('frequency',val);
@@ -145,15 +196,11 @@ function setWallpaperPath(val){
 function setSwitchingMode(val){
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').set_int('switching-mode',val);
 }
-function setWallpaperOverlaySupport(val){
-  return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').set_boolean('wallpaper-overlay-support',val);
-}
 function getErrorMsg(){
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').get_string('error-msg');
 }
 function setErrorMsg(val){
-  let dropErr = ["WC",""]
-  if(!dropErr.includes(val.split(":--")[0])) saveExceptionLog("DisplayLog: "+String(val));
-  saveExceptionLog("DisplayLog: "+String(val));
+  let dropErr = ["UWO",""]
+  if(!dropErr.includes(val)) saveExceptionLog("DisplayLog: "+String(val));
   return ExtensionUtils.getSettings('org.gnome.shell.extensions.WallpaperSwitcher').set_string('error-msg',String(val));
 }
