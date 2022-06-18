@@ -63,28 +63,30 @@ function updateMainloop(checkWO = 0){
   Mainloop.source_remove(timeout);
   let wallpaperSetter = lib.getWallpaperSetterFunction();
   lib.setErrorMsg("");
-  if(checkWO)
-  {
-    let newSetting = lib.getWallpaperOverlaySetting();
-    if(newSetting != null)
+  try{
+    if(checkWO)
     {
-      if(wallpaperOverlaySetting != newSetting){
-        // this means wallpaper overlay is installed /reinstalled /updated
-        if(handlerWallpaperOverlaySetting != null && wallpaperOverlaySetting != null)
-        wallpaperOverlaySetting.disconnect(handlerWallpaperOverlaySetting);
-        wallpaperOverlaySetting = newSetting;
-        handlerWallpaperOverlaySetting = wallpaperOverlaySetting.connect("changed::is-auto-apply",() => {
-          updateMainloop(1);
-        });
+      let newSetting = lib.getWallpaperOverlaySetting();
+      if(newSetting != null)
+      {
+        if(wallpaperOverlaySetting != newSetting){
+          // this means wallpaper overlay is installed /reinstalled /updated
+          if(handlerWallpaperOverlaySetting != null && wallpaperOverlaySetting != null)
+          wallpaperOverlaySetting.disconnect(handlerWallpaperOverlaySetting);
+          wallpaperOverlaySetting = newSetting;
+          handlerWallpaperOverlaySetting = wallpaperOverlaySetting.connect("changed::is-auto-apply",() => {
+            updateMainloop(1);
+          });
+        }
+        if(wallpaperOverlaySetting.get_boolean("is-auto-apply")){
+          // if auto apply is on
+          wallpaperSetter = lib.getWallpaperWithOverlaySetterFunction(wallpaperOverlaySetting);
+          lib.setErrorMsg("UWO"); // Using Wallpaper Overlay
+        }      
       }
-      if(wallpaperOverlaySetting.get_boolean("is-auto-apply")){
-        // if auto apply is on
-        wallpaperSetter = lib.getWallpaperWithOverlaySetterFunction(wallpaperOverlaySetting);
-        lib.setErrorMsg("UWO"); // Using Wallpaper Overlay
-      }      
     }
   }
-
+  catch{}
   timeout = Mainloop.timeout_add_seconds(lib.getFrequency(),
   lib.getSwitchingMode()? changeWallpaperRandomly(wallpaperSetter):
   changeWallpaperSequentially(wallpaperSetter)
