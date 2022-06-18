@@ -17,7 +17,7 @@ const lib            = Me.imports.lib;
 ////////////////////////////////////////////////////////////
 // Global Variables
 let mySetting;
-let wallpaperOverlaySetting;
+let wallpaperOverlaySetting = null;
 let handlerMode;
 let handlerFrequency;
 let handlerExtensionManager;
@@ -59,10 +59,9 @@ function changeWallpaperRandomly(wallpaperSetter){
   
 }
 
-function updateMainloop(checkWO){
+function updateMainloop(checkWO = 0){
   Mainloop.source_remove(timeout);
   let wallpaperSetter = lib.getWallpaperSetterFunction();
-  
   lib.setErrorMsg("");
   if(checkWO)
   {
@@ -71,7 +70,7 @@ function updateMainloop(checkWO){
     {
       if(wallpaperOverlaySetting != newSetting){
         // this means wallpaper overlay is installed /reinstalled /updated
-        if(handlerWallpaperOverlaySetting != null)
+        if(handlerWallpaperOverlaySetting != null && wallpaperOverlaySetting != null)
         wallpaperOverlaySetting.disconnect(handlerWallpaperOverlaySetting);
         wallpaperOverlaySetting = newSetting;
         handlerWallpaperOverlaySetting = wallpaperOverlaySetting.connect("changed::is-auto-apply",() => {
