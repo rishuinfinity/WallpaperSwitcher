@@ -128,9 +128,11 @@ function disable() {
   if(handlerExtensionManager != null)
   ExtensionManager.disconnect(handlerExtensionManager);
   if(handlerWallpaperOverlaySetting != null && wallpaperOverlaySetting != null)
-  wallpaperOverlaySetting.disconnect(handlerWallpaperOverlaySetting);
+  {
+    wallpaperOverlaySetting.disconnect(handlerWallpaperOverlaySetting);
+    wallpaperOverlaySetting.disconnect(handlerWallpaperOverlaySetting);
+  }
   Mainloop.source_remove(timeout);
-  wallpaperOverlaySetting.disconnect(handlerWallpaperOverlaySetting);
   handlerExtensionManager = null;
   handlerFrequency = null;
   handlerMode = null;
