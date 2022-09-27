@@ -3,7 +3,8 @@
   "description": "Extension to automatically Change wallpaper after a given interval",
   "name": "Wallpaper Switcher",
   "shell-version": [
-    "42"
+    "42",
+    "43"
   ],
   "url": "https://github.com/rishuinfinity/WallpaperSwitcher",
   "uuid": "WallpaperSwitcher@Rishu",
