@@ -157,7 +157,7 @@ function getWallpaperList(wallpaperFolderPath = getWallpaperPath()){
         // check hidden
         if(!child.get_is_hidden()){
           let ext = child.get_name().split(".").pop();
-          if(["png","jpg","jpeg"].includes(ext))
+          if(["png","jpg","jpeg"].includes(ext.toLowerCase()))
           {
             wallpaperPaths.push(wallpaperFolderPath + child.get_name());
           }
